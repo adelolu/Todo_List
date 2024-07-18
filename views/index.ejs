@@ -9,50 +9,61 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     />
-    
   </head>
   <body>
     <center>
       <h1>Todo List</h1>
-      <form
-        class="w-50"
-        action="/upload"
-        method="post"
-      >
-      <div>
-        <label class="form-label" for="tas">Enter task:</label>
-        <input type="text" name="task"  required
-          class="form-control "
-        />
-        <label class="form-label">Content:</label>
+      <form class="w-50" action="/upload" method="post">
+        <% if (message) { %>
+        <div class="alert alert-danger w-50"><%= message %></div>
+        <% } %>
+        <div>
+          <label class="form-label" for="tas">Enter task:</label>
+          <input type="text" name="task" required class="form-control" />
+          <label class="form-label">Content:</label>
 
-        <input type="text" name="content"  required
-        class="form-control"
-      />
-      </div>
-       
-        <button class="btn bg-dark-subtle text-white mt-2" type="submit">Add task</button>
+          <input type="text" name="content" required class="form-control" />
+        </div>
+
+        <button class="btn bg-dark-subtle text-white mt-2" type="submit">
+          Add task
+        </button>
       </form>
 
       <div class="w-75">
-          <% task.forEach((element,index )=> { %>
-          <div class="<%= element.complete ? "mt-3 bg-dark-subtle text-white shadow p-1 d-flex justify-content-evenly" : "mt-3 shadow p-1 d-flex justify-content-evenly" %>">
-           
-            <div><%= element.task %></div>
-            <div><%= element.content %></div>
-            <form action="/checked/<%= index %>" method="post">
-              <button class="btn" type="submit">check<i class="fa fa-check"></i></button>
-            </form>
-            <form action="/delete/<%= index %>" method="post">
-              <button class="btn" type="submit">delete<i class="fas fa-trash" ></i></button>
-            </form>
-             <form action="/update/<%= index %>" method="get">
-              <button class="btn " type="submit">edit</button>
-            </form>
-
-          </div>
-          <% }) %>
-      <!-- </div> -->
+        <% task.forEach((element )=> { %>
+        <div
+          class="<%= element.complete ? `mt-3 bg-dark-subtle text-white shadow p-1 d-flex justify-content-evenly` : `mt-3 shadow p-1 d-flex justify-content-evenly` %>"
+        >
+          <div><%= element.task %></div>
+          <div><%= element.content %></div>
+          <form id="myform" action="/checked/<%= element._id %>" method="post">
+            <button class="btn" type="submit">
+              <input
+                onchange="handleChange(event)"
+                type="checkbox"
+                id="checkbox"
+              />
+            </button>
+          </form>
+          <form action="/delete/<%= element._id %>" method="post">
+            <button class="btn" type="submit">
+              delete<i class="fas fa-trash"></i>
+            </button>
+          </form>
+          <form action="/update/<%= element._id %>" method="get">
+            <button class="btn" type="submit">edit</button>
+          </form>
+        </div>
+        <% }) %>
+      </div>
     </center>
   </body>
 </html>
+
+<script type="text/javascript">
+  function handleChange(ev) {
+    ev.preventDefault();
+    // document.getElementById("myform").submit();
+  }
+</script>
